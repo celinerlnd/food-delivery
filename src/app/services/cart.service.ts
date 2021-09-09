@@ -15,6 +15,21 @@ export class CartService {
       image: 'assets/images/foods/seafood-dishes.png',
       quantity: 1,
     },
+    {
+      id: 2,
+      name: 'Sea Food',
+      price: 12,
+      image: 'assets/images/foods/seafood-dishes.png',
+      quantity: 1,
+    },
+    {
+      id: 3,
+      name: 'Sea Food',
+      price: 12,
+      image: 'assets/images/foods/seafood-dishes.png',
+      quantity: 1,
+    },
+
   ]);
 
   getCart() {
@@ -27,5 +42,25 @@ export class CartService {
 
   removeItem(id: number) {
     this.items$.next(this.items$.getValue().filter((item) => item.id !== id));
+  }
+
+  changeQty(quantity: number, id: number) {
+    const items = this.items$.getValue();
+    const index = items.findIndex((item) => item.id === id);
+    items[index].quantity += quantity;
+    this.items$.next(items);
+  }
+
+  getTotalAmount() {
+    return this.items$.pipe(
+      map((items) => {
+        let total = 0;
+        items.forEach((item) => {
+          total += item.quantity * item.price;
+        });
+
+        return total;
+      })
+    );
   }
 }
